@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SocialMe</string>
+    <string name="socialme">SocialMe</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="invite">INVITE FRIENDS</string>
+    <string name="description">Description</string>
+    <string name="new_event">NEW event</string>
+    <string name="event1">Event1</string>
+    <string name="location">SHOW ON MAP</string>
+    <string name="invited">INVITE PEOPLE</string>
+    <string name="todo">TODO</string>
+</resources>
