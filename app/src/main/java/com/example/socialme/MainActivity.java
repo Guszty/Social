@@ -28,7 +28,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
 {
     private DatabaseReference databaseReference;
-    Button eventButton;
+    Button profileButton;
     Button newEventButton;
 
     @SuppressLint("WrongViewCast")
@@ -45,6 +45,13 @@ public class MainActivity extends AppCompatActivity
         newEventButton.setOnClickListener(v ->
         {
             Intent intent = new Intent(this, NewEventActivity.class);
+            startActivity(intent);
+        });
+
+        profileButton = findViewById(R.id.bProfile);
+        profileButton.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
 

@@ -15,4 +15,7 @@
     <string name="date2">DATE:</string>
     <string name="description2">DESCRIPTION:</string>
     <string name="invite_friends">INVITE FRIENDS</string>
+    <string name="sign_up">Sing up</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
 </resources>
