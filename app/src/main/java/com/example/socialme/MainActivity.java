@@ -20,13 +20,13 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference databaseReference;
     ImageButton profileButton;
     Button newEventButton;
-    int nrOfEvents = 0;
+    long nrOfEvents;
+    int nr;
     boolean logedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout ll = findViewById(R.id.layout);
@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 if (dataSnapshot.exists())
-                    nrOfEvents = (int) dataSnapshot.getChildrenCount();
+                    nrOfEvents = dataSnapshot.getChildrenCount();
+                else
+                    System.out.println("Hiba");
             }
 
             @Override

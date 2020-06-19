@@ -45,7 +45,7 @@ public class NewEventActivity extends AppCompatActivity
 {
 
     EditText locationEditText, titleEditText, descriptionEditText;
-    Button publish;
+    Button publish, backButton;
     TextView tvDate;
     DatabaseReference reff;
     Events member;
@@ -67,11 +67,9 @@ public class NewEventActivity extends AppCompatActivity
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         publish = (Button) findViewById(R.id.publish);
         tvDate = (TextView) findViewById(R.id.tvDate);
-
         member = new Events();
+
         reff = FirebaseDatabase.getInstance().getReference().child("Member");
-
-
         reff.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -84,7 +82,6 @@ public class NewEventActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
-
         publish.setOnClickListener(view ->
         {
             member.setDate(tvDate.getText().toString().trim());
@@ -96,10 +93,6 @@ public class NewEventActivity extends AppCompatActivity
 
             Toast.makeText(NewEventActivity.this, "Data inserted succesfully", Toast.LENGTH_LONG).show();
         });
-
-
-
-
 
         // set the date picker
         tvDate.setOnClickListener(view ->
@@ -117,7 +110,6 @@ public class NewEventActivity extends AppCompatActivity
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
         });
-
 
         mDateSetListener = (view, year, month, dayOfMonth) ->
         {
