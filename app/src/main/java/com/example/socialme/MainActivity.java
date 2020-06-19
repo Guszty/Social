@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -28,18 +29,17 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity
 {
     private DatabaseReference databaseReference;
-    Button profileButton;
+    ImageButton profileButton;
     Button newEventButton;
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout ll = findViewById(R.id.layout);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Member");
-        int eventnumber ;
+        //databaseReference = FirebaseDatabase.getInstance().getReference().child("Member");
+        //int eventnumber ;
 
         newEventButton = findViewById(R.id.bNewEvent);
         newEventButton.setOnClickListener(v ->
