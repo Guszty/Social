@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".PageActivity">
 
-
     <TextView
         android:id="@+id/tSocialMe"
         android:layout_width="150dp"
@@ -23,6 +22,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.027" />
+
+    <ImageButton
+        android:id="@+id/bBack"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abc_vector_test"
+        android:contentDescription="@string/todo" />
 
     <ImageButton
         android:id="@+id/bProfile"
@@ -63,28 +73,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tTitle" />
 
-    <ImageButton
-        android:id="@+id/bBack"
-        android:layout_width="wrap_content"
-        android:layout_height="43dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/abc_vector_test"
-        android:contentDescription="@string/todo" />
-
-    <Button
-        android:id="@+id/bInvite"
-        android:layout_width="146dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/invite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tDescription" />
-
     <TextView
         android:id="@+id/tDescription"
         android:layout_width="338dp"
@@ -97,6 +85,26 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tDate" />
+
+    <ImageButton
+        android:id="@+id/bHeart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/tDescription"
+        app:layout_constraintEnd_toEndOf="@+id/tDescription"
+        app:srcCompat="@drawable/custom_button"
+        android:background="@null" />
+
+    <Button
+        android:id="@+id/bInvite"
+        android:layout_width="146dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/invite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tDescription" />
 
     <Button
         android:id="@+id/bLocation"
@@ -117,13 +125,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bLocation" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/tDescription"
-        app:layout_constraintEnd_toEndOf="@+id/tDescription"
-        app:srcCompat="@drawable/heart2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

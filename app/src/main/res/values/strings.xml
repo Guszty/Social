@@ -10,4 +10,9 @@
     <string name="location">SHOW ON MAP</string>
     <string name="invited">INVITE PEOPLE</string>
     <string name="todo">TODO</string>
+    <string name="add_location">ADD LOCATION:</string>
+    <string name="title2">TITLE:</string>
+    <string name="date2">DATE:</string>
+    <string name="description2">DESCRIPTION:</string>
+    <string name="invite_friends">INVITE FRIENDS</string>
 </resources>

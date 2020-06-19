@@ -1,0 +1,164 @@
+package com.example.socialme;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+
+import android.os.Bundle;
+
+import android.text.Html;
+import android.util.Log;
+import android.view.View;
+
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+
+
+public class NewEventActivity extends AppCompatActivity {
+
+    EditText locationEditText, titleEditText, descriptionEditText;
+    Button publish;
+    TextView tvDate;
+    FirebaseDatabase database;
+    DatabaseReference reff;
+    Events event;
+    int maxid = 0;
+    private static final String TAG = "MainActivity";
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    public String title, description, date, location;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_event);
+
+        //hooks to all elements in activity_main.xml
+        locationEditText = findViewById(R.id.locationEditText);
+        titleEditText = (EditText) findViewById(R.id.titleEditText);
+        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        publish = (Button) findViewById(R.id.publish);
+        tvDate = (TextView) findViewById(R.id.tvDate);
+
+        event = new Events();
+        reff = FirebaseDatabase.getInstance().getReference().child("Member");
+
+        reff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    maxid = (int) dataSnapshot.getChildrenCount();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                event.setDate(tvDate.getText().toString().trim());
+                event.setDescription(descriptionEditText.getText().toString().trim());
+                event.setTitle(titleEditText.getText().toString().trim());
+                event.setLocation(locationEditText.getText().toString().trim());
+
+                reff.child(String.valueOf(maxid + 1)).setValue(event);
+
+                Toast.makeText(NewEventActivity.this, "Data inserted succesfully", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // set the date picker
+        tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        NewEventActivity.this,
+                        android.R.style.Widget_Holo_ActionBar_Solid,
+                        mDateSetListener,
+                        year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
+                Log.d(TAG, "onDataSet:dd/mm/yyy:" + dayOfMonth + "." + month + "." + year);
+                String date = dayOfMonth + "." + month + "." + year;
+                tvDate.setText(date);
+            }
+        };
+
+        //set the location picker
+        Places.initialize(getApplicationContext(), "AIzaSyAyAiIOoSxPWHMU7O0kEWui4BewImJQZUo");
+
+        locationEditText.setFocusable(false);
+        locationEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.NAME);
+
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,fieldList).build(NewEventActivity.this);
+                startActivityForResult(intent, 100);
+            }
+        });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ( requestCode == 100 && resultCode == RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            locationEditText.setText(place.getAddress());
+
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(getApplicationContext(),status.getStatusMessage(),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //set the Gmail SDK
+    public void open(View view) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(new StringBuilder()
+                .append("<body><p>Content</p></body>")
+                .toString()));
+        sendIntent.setType("text/html");
+        startActivity(sendIntent);
+    }
+}
