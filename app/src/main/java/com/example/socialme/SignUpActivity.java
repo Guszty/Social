@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignInActivity extends AppCompatActivity
+public class SignUpActivity extends AppCompatActivity
 {
 
     EditText emailID, password;
@@ -28,7 +27,7 @@ public class SignInActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         emailID = findViewById(R.id.editText);
@@ -51,22 +50,22 @@ public class SignInActivity extends AppCompatActivity
             }
             else
                 {
-                mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>()
+                mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>()
                 {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task)
                     {
                         if (!task.isSuccessful())
-                            Toast.makeText(SignInActivity.this, "This user already exists, please try again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "This user already exists, please try again", Toast.LENGTH_SHORT).show();
                         else
-                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                     }
                 });
             }
         });
         tvSignIn.setOnClickListener(v ->
         {
-            Intent i = new Intent(SignInActivity.this, LoginActivity.class);
+            Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(i);
         });
     }

@@ -3,17 +3,11 @@ package com.example.socialme;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,16 +15,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity
 {
     private DatabaseReference databaseReference;
     ImageButton profileButton;
     Button newEventButton;
+    int nrOfEvents = 0;
+    boolean logedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,8 +29,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout ll = findViewById(R.id.layout);
-        //databaseReference = FirebaseDatabase.getInstance().getReference().child("Member");
-        //int eventnumber ;
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Member");
+        databaseReference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                    nrOfEvents = (int) dataSnapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
 
         newEventButton = findViewById(R.id.bNewEvent);
         newEventButton.setOnClickListener(v ->
@@ -51,11 +53,19 @@ public class MainActivity extends AppCompatActivity
         profileButton = findViewById(R.id.bProfile);
         profileButton.setOnClickListener(v ->
         {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            if (logedIn)
+            {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(this, SignUpActivity.class);
+                startActivity(intent);
+            }
         });
 
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < nrOfEvents; i++)
         {
             final Button button = new Button(this);
             button.setLayoutParams(new LinearLayout.LayoutParams(150, 150));

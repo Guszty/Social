@@ -45,13 +45,14 @@ public class NewEventActivity extends AppCompatActivity
 {
 
     EditText locationEditText, titleEditText, descriptionEditText;
-    Button publish, returnButton;
+    Button publish;
     TextView tvDate;
-    FirebaseDatabase database;
     DatabaseReference reff;
-    Events event;
+    Events member;
+
     int maxid = 0;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "NewEventActivity";
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -66,16 +67,11 @@ public class NewEventActivity extends AppCompatActivity
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         publish = (Button) findViewById(R.id.publish);
         tvDate = (TextView) findViewById(R.id.tvDate);
-        returnButton = findViewById(R.id.returnButton);
-        returnButton.setOnClickListener(v ->
-        {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        });
 
-        event = new Events();
-
+        member = new Events();
         reff = FirebaseDatabase.getInstance().getReference().child("Member");
+
+
         reff.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -84,22 +80,26 @@ public class NewEventActivity extends AppCompatActivity
                 if (dataSnapshot.exists())
                     maxid = (int) dataSnapshot.getChildrenCount();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
+
         publish.setOnClickListener(view ->
         {
-            event.setDate(tvDate.getText().toString().trim());
-            event.setDescription(descriptionEditText.getText().toString().trim());
-            event.setTitle(titleEditText.getText().toString().trim());
-            event.setLocation(locationEditText.getText().toString().trim());
+            member.setDate(tvDate.getText().toString().trim());
+            member.setDescription(descriptionEditText.getText().toString().trim());
+            member.setTitle(titleEditText.getText().toString().trim());
+            member.setLocation(locationEditText.getText().toString().trim());
 
-            reff.child(String.valueOf(maxid + 1)).setValue(event);
+            reff.child(String.valueOf(maxid + 1)).setValue(member);
 
             Toast.makeText(NewEventActivity.this, "Data inserted succesfully", Toast.LENGTH_LONG).show();
         });
+
+
+
+
 
         // set the date picker
         tvDate.setOnClickListener(view ->
@@ -111,12 +111,13 @@ public class NewEventActivity extends AppCompatActivity
 
             DatePickerDialog dialog = new DatePickerDialog(
                     NewEventActivity.this,
-                    android.R.style.Widget_Holo_ActionBar_Solid,
+                    android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                     mDateSetListener,
                     year, month, day);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
         });
+
 
         mDateSetListener = (view, year, month, dayOfMonth) ->
         {
@@ -133,11 +134,11 @@ public class NewEventActivity extends AppCompatActivity
         locationEditText.setOnClickListener(view ->
         {
             List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.NAME);
-
             Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,fieldList).build(NewEventActivity.this);
             startActivityForResult(intent, 100);
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
@@ -160,8 +161,16 @@ public class NewEventActivity extends AppCompatActivity
     {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(new StringBuilder().append("<body><p>Content</p></body>").toString()));
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(new StringBuilder()
+                .append("<body><p>Content</p></body>")
+                .toString()));
         sendIntent.setType("text/html");
         startActivity(sendIntent);
+
     }
+
 }
+
+
+
+
