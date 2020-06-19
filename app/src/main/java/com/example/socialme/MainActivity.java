@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity
         eventButton.setOnClickListener(v ->
         {
             Intent intent = new Intent(this, PageActivity.class);
+            intent.putExtra("name", 1);
             startActivity(intent);
         });
 

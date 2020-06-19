@@ -23,6 +23,8 @@ public class PageActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Intent i = getIntent();
+        int id = i.getIntExtra("name", 5);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page);
         ImageButton back = findViewById(R.id.bBack);
@@ -42,7 +44,7 @@ public class PageActivity extends AppCompatActivity
         title = findViewById(R.id.tTitle);
         date = findViewById(R.id.tDate);
         description = findViewById(R.id.tDescription);
-        ref = FirebaseDatabase.getInstance().getReference().child("Member").child("1");
+        ref = FirebaseDatabase.getInstance().getReference().child("Member").child(String.valueOf(id));
         ref.addValueEventListener(new ValueEventListener()
         {
             @Override
