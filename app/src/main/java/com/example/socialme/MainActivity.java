@@ -45,11 +45,14 @@ public class MainActivity extends AppCompatActivity
         });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Events");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
                 eventsList.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren())
+                {
                     Events event = postSnapshot.getValue(Events.class);
                     eventsList.add(event);
                 }

@@ -41,10 +41,11 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class NewEventActivity extends AppCompatActivity {
+public class NewEventActivity extends AppCompatActivity
+{
 
     EditText locationEditText, titleEditText, descriptionEditText;
-    Button publish;
+    Button publish, returnButton;
     TextView tvDate;
     FirebaseDatabase database;
     DatabaseReference reff;
@@ -52,10 +53,10 @@ public class NewEventActivity extends AppCompatActivity {
     int maxid = 0;
     private static final String TAG = "MainActivity";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    public String title, description, date, location;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
 
@@ -65,99 +66,101 @@ public class NewEventActivity extends AppCompatActivity {
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         publish = (Button) findViewById(R.id.publish);
         tvDate = (TextView) findViewById(R.id.tvDate);
+        returnButton = findViewById(R.id.returnButton);
+        returnButton.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
 
         event = new Events();
-        reff = FirebaseDatabase.getInstance().getReference().child("Member");
 
-        reff.addValueEventListener(new ValueEventListener() {
+        reff = FirebaseDatabase.getInstance().getReference().child("Member");
+        reff.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
                     maxid = (int) dataSnapshot.getChildrenCount();
-                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
 
-        publish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                event.setDate(tvDate.getText().toString().trim());
-                event.setDescription(descriptionEditText.getText().toString().trim());
-                event.setTitle(titleEditText.getText().toString().trim());
-                event.setLocation(locationEditText.getText().toString().trim());
+        publish.setOnClickListener(view ->
+        {
+            event.setDate(tvDate.getText().toString().trim());
+            event.setDescription(descriptionEditText.getText().toString().trim());
+            event.setTitle(titleEditText.getText().toString().trim());
+            event.setLocation(locationEditText.getText().toString().trim());
 
-                reff.child(String.valueOf(maxid + 1)).setValue(event);
+            reff.child(String.valueOf(maxid + 1)).setValue(event);
 
-                Toast.makeText(NewEventActivity.this, "Data inserted succesfully", Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(NewEventActivity.this, "Data inserted succesfully", Toast.LENGTH_LONG).show();
         });
 
         // set the date picker
-        tvDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
+        tvDate.setOnClickListener(view ->
+        {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dialog = new DatePickerDialog(
-                        NewEventActivity.this,
-                        android.R.style.Widget_Holo_ActionBar_Solid,
-                        mDateSetListener,
-                        year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
+            DatePickerDialog dialog = new DatePickerDialog(
+                    NewEventActivity.this,
+                    android.R.style.Widget_Holo_ActionBar_Solid,
+                    mDateSetListener,
+                    year, month, day);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
         });
 
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                Log.d(TAG, "onDataSet:dd/mm/yyy:" + dayOfMonth + "." + month + "." + year);
-                String date = dayOfMonth + "." + month + "." + year;
-                tvDate.setText(date);
-            }
+        mDateSetListener = (view, year, month, dayOfMonth) ->
+        {
+            month = month + 1;
+            Log.d(TAG, "onDataSet:dd/mm/yyy:" + dayOfMonth + "." + month + "." + year);
+            String date = dayOfMonth + "." + month + "." + year;
+            tvDate.setText(date);
         };
 
         //set the location picker
         Places.initialize(getApplicationContext(), "AIzaSyAyAiIOoSxPWHMU7O0kEWui4BewImJQZUo");
 
         locationEditText.setFocusable(false);
-        locationEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.NAME);
+        locationEditText.setOnClickListener(view ->
+        {
+            List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.NAME);
 
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,fieldList).build(NewEventActivity.this);
-                startActivityForResult(intent, 100);
-            }
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN,fieldList).build(NewEventActivity.this);
+            startActivityForResult(intent, 100);
         });
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if ( requestCode == 100 && resultCode == RESULT_OK) {
+        if ( requestCode == 100 && resultCode == RESULT_OK)
+        {
             Place place = Autocomplete.getPlaceFromIntent(data);
             locationEditText.setText(place.getAddress());
 
-        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+        }
+        else if (resultCode == AutocompleteActivity.RESULT_ERROR)
+        {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(),status.getStatusMessage(),Toast.LENGTH_SHORT).show();
         }
     }
 
     //set the Gmail SDK
-    public void open(View view) {
+    public void open(View view)
+    {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(new StringBuilder()
-                .append("<body><p>Content</p></body>")
-                .toString()));
+        sendIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(new StringBuilder().append("<body><p>Content</p></body>").toString()));
         sendIntent.setType("text/html");
         startActivity(sendIntent);
     }

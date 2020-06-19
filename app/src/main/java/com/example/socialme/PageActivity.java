@@ -26,21 +26,18 @@ public class PageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page);
         ImageButton back = findViewById(R.id.bBack);
-        back.setOnClickListener(v -> {
+        back.setOnClickListener(v ->
+        {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
         ImageButton heart = findViewById(R.id.bHeart);
-        heart.setOnClickListener(new View.OnClickListener()
+        heart.setOnClickListener(v ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                if (heart.isSelected())
-                    heart.setSelected(false);
-                else
-                    heart.setSelected(true);
-            }
+            if (heart.isSelected())
+                heart.setSelected(false);
+            else
+                heart.setSelected(true);
         });
         title = findViewById(R.id.tTitle);
         date = findViewById(R.id.tDate);
