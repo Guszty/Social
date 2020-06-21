@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity
     Button newEventButton;
     int maxid = 0;
     boolean logedIn = false;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    FirebaseAuth mFirebaseAuth;
-    DataSnapshot snapshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,26 +39,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
+                maxid = (int)dataSnapshot.getChildrenCount();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
-        mAuthStateListener = firebaseAuth ->
-        {
-            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-            if (mFirebaseUser != null)
-            {
-                logedIn = true;
-            }
-            else
-                logedIn = false;
-        };
-
-        if(logedIn)
-            profileButton.setText("Sign up");
-        else
-            profileButton.setText("Log out");
 
         newEventButton = findViewById(R.id.bNewEvent);
         newEventButton.setOnClickListener(v ->
@@ -103,11 +85,6 @@ public class MainActivity extends AppCompatActivity
             });
             ll.addView(button);
         }
-
-    }
-
-    public void count(DataSnapshot snapshot)
-    {
 
     }
 
