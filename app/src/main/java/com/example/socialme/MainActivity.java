@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,11 +18,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
 {
-    private DatabaseReference databaseReference;
-    ImageButton profileButton;
+    private DatabaseReference reff;
+    Button profileButton;
     Button newEventButton;
-    long nrOfEvents;
-    int nr;
+    int maxid = 0;
     boolean logedIn = false;
 
     @Override
@@ -30,18 +30,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LinearLayout ll = findViewById(R.id.layout);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Member");
-        databaseReference.addValueEventListener(new ValueEventListener()
+        reff = FirebaseDatabase.getInstance().getReference().child("Member");
+        reff.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 if (dataSnapshot.exists())
-                    nrOfEvents = dataSnapshot.getChildrenCount();
-                else
-                    System.out.println("Hiba");
+                    maxid = (int) dataSnapshot.getChildrenCount();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        for (int i = 1; i < nrOfEvents; i++)
+        for (int i = 1; i < maxid; i++)
         {
             final Button button = new Button(this);
             button.setLayoutParams(new LinearLayout.LayoutParams(150, 150));

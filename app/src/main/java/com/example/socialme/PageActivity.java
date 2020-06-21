@@ -33,14 +33,6 @@ public class PageActivity extends AppCompatActivity
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
-        ImageButton heart = findViewById(R.id.bHeart);
-        heart.setOnClickListener(v ->
-        {
-            if (heart.isSelected())
-                heart.setSelected(false);
-            else
-                heart.setSelected(true);
-        });
         title = findViewById(R.id.tTitle);
         date = findViewById(R.id.tDate);
         description = findViewById(R.id.tDescription);
@@ -60,5 +52,14 @@ public class PageActivity extends AppCompatActivity
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
+    }
+
+    public void open (View view) {
+        Intent sendintent = new Intent ( Intent.ACTION_SEND);
+        sendintent.setType("text/plain");
+        sendintent.putExtra(Intent.EXTRA_SUBJECT, "Email subject");
+        sendintent.putExtra(Intent.EXTRA_TEXT, "Body of Email");
+        startActivity(sendintent);
+
     }
 }

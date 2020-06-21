@@ -86,15 +86,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tDate" />
 
-    <ImageButton
-        android:id="@+id/bHeart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/tDescription"
-        app:layout_constraintEnd_toEndOf="@+id/tDescription"
-        app:srcCompat="@drawable/custom_button"
-        android:background="@null" />
-
     <Button
         android:id="@+id/bInvite"
         android:layout_width="146dp"
@@ -104,7 +95,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/tDescription"
+        android:onClick="open" />
 
     <Button
         android:id="@+id/bLocation"
