@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity
     Button profileButton;
     Button newEventButton;
     int maxid = 0;
-    boolean logedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,18 +54,9 @@ public class MainActivity extends AppCompatActivity
         profileButton = findViewById(R.id.bProfile);
         profileButton.setOnClickListener(v ->
         {
-            if (logedIn)
-            {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-            else
-            {
                 Intent intent = new Intent(this, SignUpActivity.class);
                 startActivity(intent);
                 finish();
-            }
         });
 
         for (int i = 1; i < maxid; i++)
