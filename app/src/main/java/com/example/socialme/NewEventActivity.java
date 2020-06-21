@@ -91,7 +91,9 @@ public class NewEventActivity extends AppCompatActivity
 
             reff.child(String.valueOf(maxid + 1)).setValue(member);
 
-            Toast.makeText(NewEventActivity.this, "Data inserted succesfully", Toast.LENGTH_LONG).show();
+           Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         // set the date picker

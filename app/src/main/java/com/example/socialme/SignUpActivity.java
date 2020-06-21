@@ -58,7 +58,11 @@ public class SignUpActivity extends AppCompatActivity
                         if (!task.isSuccessful())
                             Toast.makeText(SignUpActivity.this, "This user already exists, please try again", Toast.LENGTH_SHORT).show();
                         else
+                        {
                             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                            finish();
+                        }
+
                     }
                 });
             }
@@ -67,6 +71,7 @@ public class SignUpActivity extends AppCompatActivity
         {
             Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(i);
+            finish();
         });
     }
 }

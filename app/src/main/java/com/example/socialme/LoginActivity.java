@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity
                 Toast.makeText(LoginActivity.this, "You are logged in",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
+                finish();
             }
             else
                 Toast.makeText(LoginActivity.this, "Please Login",Toast.LENGTH_SHORT).show();
@@ -68,6 +69,7 @@ public class LoginActivity extends AppCompatActivity
                         {
                         Intent intToHome = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intToHome);
+                        finish();
                     }
                 });
             }
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity
         {
             Intent intSignUp = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intSignUp);
+            finish();
         });
     }
     @Override

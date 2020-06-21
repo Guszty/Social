@@ -32,6 +32,7 @@ public class PageActivity extends AppCompatActivity
         {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+            finish();
         });
         title = findViewById(R.id.tTitle);
         date = findViewById(R.id.tDate);
